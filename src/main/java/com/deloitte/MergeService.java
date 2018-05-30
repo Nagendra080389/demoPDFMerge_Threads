@@ -14,12 +14,13 @@ import javax.ws.rs.core.MediaType;
 @RestController
 public class MergeService {
 
-	   @RequestMapping(value = "/MergeService/merge", method = RequestMethod.GET, produces = MediaType.APPLICATION_XML)
-	   public static void mergeUsers(@RequestParam("file1Id") String file1Id,
+	   @RequestMapping(value = "/MergeService/merge", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
+	   public static String mergeUsers(@RequestParam("file1Id") String file1Id,
 			   @RequestParam("file2Id") String file2Id,
 			   @RequestParam("parentId") String parentId){
+		   return "SUCCESS";
+		   //MergeAndUploadPDF.mergeanduploadPDF(file1Id, file2Id, parentId);; 
 		   
-		   MergeAndUploadPDF.mergeanduploadPDF(file1Id, file2Id, parentId);; 
 	   }	
 }
      
