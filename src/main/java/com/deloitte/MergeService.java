@@ -20,10 +20,9 @@ public class MergeService {
 	   public static String mergeUsers(@RequestParam("file1Id") String file1Id,
 			   @RequestParam("file2Id") String file2Id,
 			   @RequestParam("parentId") String parentId){
-		   Gson gson = new GsonBuilder().disableHtmlEscaping().create();
-		   
+		   Gson gson = new GsonBuilder().disableHtmlEscaping().create();		   
+		   MergeAndUploadPDF.mergeanduploadPDF(file1Id, file2Id, parentId);; 
 		   return gson.toJson("SUCCESS");
-		   //MergeAndUploadPDF.mergeanduploadPDF(file1Id, file2Id, parentId);; 
 		   
 	   }	
 }
