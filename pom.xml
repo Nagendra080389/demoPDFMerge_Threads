@@ -18,6 +18,14 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
+	<repositories>
+		<repository>
+			<id>project.local</id>
+			<name>project</name>
+			<url>file:${project.basedir}/repo</url>
+		</repository>
+	</repositories>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -25,6 +33,37 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.force.api</groupId>
+			<artifactId>force-wsc</artifactId>
+			<version>43.0.0</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.force.api/force-apex-api -->
+		<dependency>
+			<groupId>com.force.api</groupId>
+			<artifactId>force-apex-api</artifactId>
+			<version>40.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.force.toolingAPI</groupId>
+			<artifactId>toolingAPI</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.force.api/force-metadata-api -->
+		<dependency>
+			<groupId>com.force.api</groupId>
+			<artifactId>force-metadata-api</artifactId>
+			<version>40.0.0</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.force.api/force-partner-api -->
+		<dependency>
+			<groupId>com.force.api</groupId>
+			<artifactId>force-partner-api</artifactId>
+			<version>40.0.0</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-rest</artifactId>
