@@ -145,5 +145,87 @@ public class MergeAndUploadPDF {
 		}
 
 	}
+	
+	// split 1 pdf file and get first page out of it
+	public static void splitanduploadPDF(String documentId, String parentId) {
+
+		try {
+
+			System.out.println("Querying for the mail request...");
+
+			ConnectorConfig config = new ConnectorConfig();
+			config.setUsername(USERNAME);
+			config.setPassword(PASSWORD);
+			// config.setTraceMessage(true);
+
+			// display some current settings
+			System.out.println("Auth EndPoint: " + config.getAuthEndpoint());
+			System.out.println("Service EndPoint: " + config.getServiceEndpoint());
+			System.out.println("Username: " + config.getUsername());
+			System.out.println("SessionId: " + config.getSessionId());
+
+			connection = Connector.newConnection(config);
+
+			// query for the attachment data
+			QueryResult queryResults = connection.query(
+					"Select Id,VersionData from ContentVersion where Id IN(Select LatestPublishedVersionId from ContentDocument where Id = '"
+							+ documentId + "')");
+			System.out.println("in here.." + queryResults.getSize());
+			File tempFile = File.createTempFile("test_", ".pdf", null);
+			for (int i = 0; i < queryResults.getSize(); i++) {
+				ContentVersion contentData = (ContentVersion) queryResults.getRecords()[i];
+				System.out.println(i + "..file size.." + contentData.getVersionData().length + "    "
+						+ contentData.getVersionData());
+				FileOutputStream fos = new FileOutputStream(tempFile);
+				fos.write(contentData.getVersionData());
+				fos.close();
+			}
+			PdfReader Split_PDF_Document = new PdfReader(tempFile.toString());
+			Document document;
+			PdfCopy copy;
+
+			document = new Document();
+			String FileName = "File" + 1 + ".pdf";
+			copy = new PdfCopy(document, new FileOutputStream(FileName));
+			document.open();
+			copy.addPage(copy.getImportedPage(Split_PDF_Document, 1));
+			document.close();
+
+			File splitFile = new File(FileName);
+			splitFile.createNewFile();
+
+			// File mergedFile = File .createTempFile( "CombinedPDFDocument", ".pdf", null);
+
+			System.out.println("Creating ContentVersion record...");
+			ContentVersion[] record = new ContentVersion[1];
+			ContentVersion splitContentData = new ContentVersion();
+
+			splitContentData.setVersionData(Files.readAllBytes(splitFile.toPath()));
+			splitContentData.setFirstPublishLocationId(parentId);
+			splitContentData.setTitle("Split Document");
+			splitContentData.setPathOnClient(FileName);
+
+			record[0] = splitContentData;
+
+			// create the records in Salesforce.com
+			SaveResult[] saveResults = connection.create(record);
+
+			// check the returned results for any errors
+			for (int i = 0; i < saveResults.length; i++) {
+				if (saveResults[i].isSuccess()) {
+					System.out.println(i + ". Successfully created record - Id: " + saveResults[i].getId());
+				} else {
+					Error[] errors = saveResults[i].getErrors();
+					for (int j = 0; j < errors.length; j++) {
+						System.out.println("ERROR creating record: " + errors[j].getMessage());
+					}
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
 
 }
