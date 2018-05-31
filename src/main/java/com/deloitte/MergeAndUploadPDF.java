@@ -25,8 +25,8 @@ public class MergeAndUploadPDF {
 
 	public static void main(String[] args) {
 
-		String file1Id = "0692F000000FPX5";
-		String file2Id = "0692F000000FPHb";
+		String file1Id = "0692F000000FQUW";
+		String file2Id = "0692F000000FQVA";
 
 		String parentId = "a0Z2F000000eFEVUA2";
 
