@@ -16,14 +16,23 @@ import com.google.gson.GsonBuilder;
 @RestController
 public class MergeService {
 
-	   @RequestMapping(value = "/MergeService/merge", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
+	   @RequestMapping(value = "/MergeNSplitService/merge", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
 	   public static String mergeUsers(@RequestParam("file1Id") String file1Id,
 			   @RequestParam("file2Id") String file2Id,
 			   @RequestParam("parentId") String parentId){
 		   Gson gson = new GsonBuilder().disableHtmlEscaping().create();		   
 		   MergeAndUploadPDF.mergeanduploadPDF(file1Id, file2Id, parentId);; 
-		   return gson.toJson("SUCCESS");
+		   return gson.toJson("Merge PDF SUCCESS");
 		   
-	   }	
+	   }
+	
+	   @RequestMapping(value = "/MergeNSplitService/split", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
+	   public static String splitPDFs(@RequestParam("file1Id") String file1Id,
+			   @RequestParam("parentId") String parentId){
+		   Gson gson = new GsonBuilder().disableHtmlEscaping().create();		   
+		   MergeAndUploadPDF.splitanduploadPDF(file1Id, parentId);; 
+		   return gson.toJson("SPLIT PDF SUCCESS");
+		   
+	   }
 }
      
