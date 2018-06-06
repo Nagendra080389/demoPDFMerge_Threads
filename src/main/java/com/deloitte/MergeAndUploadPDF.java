@@ -21,17 +21,6 @@ public class MergeAndUploadPDF {
 
 	static EnterpriseConnection connection;
 
-	/*public static void main(String[] args) {
-
-		String file1Id = "0692F000000FQUW";
-		String file2Id = "0692F000000FQVA";
-
-		String parentId = "a0Z2F000000eFEVUA2";
-
-		//mergeanduploadPDF(file1Id,file2Id, parentId, accessToken, instanceURL);
-
-	}*/
-
 	// queries and displays the 5 newest contacts
 	public static void mergeanduploadPDF(String file1Id, String file2Id, String parentId, String accessToken, String instanceURL, boolean useSoap) {
 
@@ -45,7 +34,6 @@ public class MergeAndUploadPDF {
 			config.setPassword(instanceURL + "/services/Soap/T/40.0");
 		}
 
-		//String[] contentDocIds = { "0692F000000FPX5", "0692F000000FPHb" };
 		List<String> contentDocIds = new ArrayList<String>();
 		contentDocIds.add(file1Id);
 		contentDocIds.add(file2Id);
@@ -69,9 +57,9 @@ public class MergeAndUploadPDF {
 						System.out.println(i + "..file size.." + contentData.getVersionData().length + "    "
 								+ contentData.getVersionData());
 						File tempFile = File.createTempFile("test_", ".pdf", null);
-						FileOutputStream fos = new FileOutputStream(tempFile);
-						fos.write(contentData.getVersionData());
-						fos.close();
+						try (FileOutputStream fos = new FileOutputStream(tempFile)) {
+							fos.write(contentData.getVersionData());
+						}
 						inputFiles.add(tempFile);
 					}
 				}
@@ -94,31 +82,17 @@ public class MergeAndUploadPDF {
 			File mergedFile = new File("CombinedPDFDocument" + ".pdf");
 			mergedFile.createNewFile();
 
-			//File mergedFile = File .createTempFile( "CombinedPDFDocument", ".pdf", null);
-
 			System.out.println("Creating ContentVersion record...");
 			ContentVersion[] record = new ContentVersion[1];
 			ContentVersion mergedContentData = new ContentVersion();
 
 			mergedContentData.setVersionData(Files.readAllBytes(mergedFile.toPath()));
-			//mergedContentData.setFirstPublishLocationId("a0Z2F000000eFEVUA2");
 			mergedContentData.setFirstPublishLocationId(parentId);
 			mergedContentData.setTitle("Merged Document");
 			mergedContentData.setPathOnClient("/CombinedPDFDocument.pdf");
 
 			record[0] = mergedContentData;
 
-			//creating attachment
-			/*System.out.println("Creating attachment record...");
-			Attachment[] record = new Attachment[1];
-			Attachment a = new Attachment();
-
-			a.setParentId("a0Z2F000000eFEVUA2");
-			a.setContentType("application/pdf");
-			a.setBody(Files.readAllBytes(mergedFile.toPath()));
-			a.setName("Merged Document");
-
-			record[0] = a;*/
 
 			// create the records in Salesforce.com
 			SaveResult[] saveResults = connection.create(record);
@@ -167,9 +141,9 @@ public class MergeAndUploadPDF {
 				ContentVersion contentData = (ContentVersion) queryResults.getRecords()[i];
 				System.out.println(i + "..file size.." + contentData.getVersionData().length + "    "
 						+ contentData.getVersionData());
-				FileOutputStream fos = new FileOutputStream(tempFile);
-				fos.write(contentData.getVersionData());
-				fos.close();
+				try (FileOutputStream fos = new FileOutputStream(tempFile)) {
+					fos.write(contentData.getVersionData());
+				}
 			}
 			PdfReader Split_PDF_Document = new PdfReader(tempFile.toString());
 			Document document;
@@ -184,8 +158,6 @@ public class MergeAndUploadPDF {
 
 			File splitFile = new File(FileName);
 			splitFile.createNewFile();
-
-			// File mergedFile = File .createTempFile( "CombinedPDFDocument", ".pdf", null);
 
 			System.out.println("Creating ContentVersion record...");
 			ContentVersion[] record = new ContentVersion[1];
