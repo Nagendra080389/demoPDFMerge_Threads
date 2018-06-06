@@ -19,36 +19,31 @@ import com.sforce.ws.ConnectorConfig;
 
 public class MergeAndUploadPDF {
 
-	static final String USERNAME = "amsane@deloitte.com.elc.elcgccdev1";
-	static final String PASSWORD = "start1234";
 	static EnterpriseConnection connection;
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 
 		String file1Id = "0692F000000FQUW";
 		String file2Id = "0692F000000FQVA";
 
 		String parentId = "a0Z2F000000eFEVUA2";
 
-		mergeanduploadPDF(file1Id,file2Id, parentId);
+		//mergeanduploadPDF(file1Id,file2Id, parentId, accessToken, instanceURL);
 
-	}
+	}*/
 
 	// queries and displays the 5 newest contacts
-	public static void mergeanduploadPDF(String file1Id, String file2Id, String parentId) {
+	public static void mergeanduploadPDF(String file1Id, String file2Id, String parentId, String accessToken, String instanceURL, boolean useSoap) {
 
 		System.out.println("Querying for the mail request...");
 
 		ConnectorConfig config = new ConnectorConfig();
-		config.setUsername(USERNAME);
-		config.setPassword(PASSWORD);
-		// config.setTraceMessage(true);
-
-		// display some current settings
-		System.out.println("Auth EndPoint: " + config.getAuthEndpoint());
-		System.out.println("Service EndPoint: " + config.getServiceEndpoint());
-		System.out.println("Username: " + config.getUsername());
-		System.out.println("SessionId: " + config.getSessionId());
+		config.setSessionId(accessToken);
+		if(useSoap) {
+			config.setPassword(instanceURL + "/services/Soap/u/40.0");
+		}else {
+			config.setPassword(instanceURL + "/services/Soap/T/40.0");
+		}
 
 		//String[] contentDocIds = { "0692F000000FPX5", "0692F000000FPHb" };
 		List<String> contentDocIds = new ArrayList<String>();
@@ -147,23 +142,19 @@ public class MergeAndUploadPDF {
 	}
 	
 	// split 1 pdf file and get first page out of it
-	public static void splitanduploadPDF(String documentId, String parentId) {
+	public static void splitanduploadPDF(String documentId, String parentId, String accessToken, String instanceURL, boolean useSoap) {
 
 		try {
 
 			System.out.println("Querying for the mail request...");
 
 			ConnectorConfig config = new ConnectorConfig();
-			config.setUsername(USERNAME);
-			config.setPassword(PASSWORD);
-			// config.setTraceMessage(true);
-
-			// display some current settings
-			System.out.println("Auth EndPoint: " + config.getAuthEndpoint());
-			System.out.println("Service EndPoint: " + config.getServiceEndpoint());
-			System.out.println("Username: " + config.getUsername());
-			System.out.println("SessionId: " + config.getSessionId());
-
+			config.setSessionId(accessToken);
+			if(useSoap) {
+				config.setPassword(instanceURL + "/services/Soap/u/40.0");
+			}else {
+				config.setPassword(instanceURL + "/services/Soap/T/40.0");
+			}
 			connection = Connector.newConnection(config);
 
 			// query for the attachment data
