@@ -30,7 +30,7 @@ public class MergeAndUploadPDF {
         ConnectorConfig config = new ConnectorConfig();
 		config.setSessionId(accessToken);
 		if(useSoap) {
-			config.setServiceEndpoint(instanceURL + "/services/Soap/u/40.0");
+			config.setServiceEndpoint(instanceURL + "/services/Soap/c/40.0");
 		}else {
 			config.setServiceEndpoint(instanceURL + "/services/Soap/T/40.0");
 		}
@@ -133,7 +133,7 @@ public class MergeAndUploadPDF {
 			ConnectorConfig config = new ConnectorConfig();
 			config.setSessionId(accessToken);
 			if(useSoap) {
-				config.setServiceEndpoint(instanceURL + "/services/Soap/u/40.0");
+				config.setServiceEndpoint(instanceURL + "/services/Soap/c/40.0");
 			}else {
 				config.setServiceEndpoint(instanceURL + "/services/Soap/T/40.0");
 			}
