@@ -25,8 +25,9 @@ public class MergeAndUploadPDF {
 	public static void mergeanduploadPDF(String file1Id, String file2Id, String parentId, String accessToken, String instanceURL, boolean useSoap) {
 
 		System.out.println("Querying for the mail request...");
-
-		ConnectorConfig config = new ConnectorConfig();
+        Document PDFCombineUsingJava = new Document();
+        PdfCopy copy = null;
+        ConnectorConfig config = new ConnectorConfig();
 		config.setSessionId(accessToken);
 		if(useSoap) {
 			config.setPassword(instanceURL + "/services/Soap/u/40.0");
@@ -65,8 +66,8 @@ public class MergeAndUploadPDF {
 				}
 			}
 
-			Document PDFCombineUsingJava = new Document();
-			PdfCopy copy = new PdfCopy(PDFCombineUsingJava, new FileOutputStream("CombinedPDFDocument.pdf"));
+
+			copy = new PdfCopy(PDFCombineUsingJava, new FileOutputStream("CombinedPDFDocument.pdf"));
 			PDFCombineUsingJava.open();
 			PdfReader ReadInputPDF;
 			int number_of_pages;
@@ -77,7 +78,7 @@ public class MergeAndUploadPDF {
 					copy.addPage(copy.getImportedPage(ReadInputPDF, ++page));
 				}
 			}
-			PDFCombineUsingJava.close();
+
 
 			File mergedFile = new File("CombinedPDFDocument" + ".pdf");
 			mergedFile.createNewFile();
@@ -111,13 +112,18 @@ public class MergeAndUploadPDF {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}finally {
+            PDFCombineUsingJava.close();
+            copy.close();
+        }
 
 	}
 	
 	// split 1 pdf file and get first page out of it
 	public static void splitanduploadPDF(String documentId, String parentId, String accessToken, String instanceURL, boolean useSoap) {
-
+        PdfCopy copy = null;
+        PdfReader Split_PDF_Document = null;
+        Document document = null;
 		try {
 
 			System.out.println("Querying for the mail request...");
@@ -145,16 +151,15 @@ public class MergeAndUploadPDF {
 					fos.write(contentData.getVersionData());
 				}
 			}
-			PdfReader Split_PDF_Document = new PdfReader(tempFile.toString());
-			Document document;
-			PdfCopy copy;
+			Split_PDF_Document = new PdfReader(tempFile.toString());
+
 
 			document = new Document();
 			String FileName = "File" + 1 + ".pdf";
 			copy = new PdfCopy(document, new FileOutputStream(FileName));
 			document.open();
 			copy.addPage(copy.getImportedPage(Split_PDF_Document, 1));
-			document.close();
+
 
 			File splitFile = new File(FileName);
 			splitFile.createNewFile();
@@ -187,7 +192,18 @@ public class MergeAndUploadPDF {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}finally {
+            if (copy != null) {
+                copy.close();
+            }
+            if(Split_PDF_Document != null){
+                Split_PDF_Document.close();
+            }
+
+            if(document != null){
+                document.close();
+            }
+        }
 
 	}
 
