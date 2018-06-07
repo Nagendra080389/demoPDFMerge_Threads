@@ -114,7 +114,9 @@ public class MergeAndUploadPDF {
 			e.printStackTrace();
 		}finally {
             PDFCombineUsingJava.close();
-            copy.close();
+            if(copy != null) {
+				copy.close();
+			}
         }
 
 	}
