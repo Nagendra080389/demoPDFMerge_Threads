@@ -30,9 +30,9 @@ public class MergeAndUploadPDF {
         ConnectorConfig config = new ConnectorConfig();
 		config.setSessionId(accessToken);
 		if(useSoap) {
-			config.setPassword(instanceURL + "/services/Soap/u/40.0");
+			config.setServiceEndpoint(instanceURL + "/services/Soap/u/40.0");
 		}else {
-			config.setPassword(instanceURL + "/services/Soap/T/40.0");
+			config.setServiceEndpoint(instanceURL + "/services/Soap/T/40.0");
 		}
 
 		List<String> contentDocIds = new ArrayList<String>();
@@ -133,9 +133,9 @@ public class MergeAndUploadPDF {
 			ConnectorConfig config = new ConnectorConfig();
 			config.setSessionId(accessToken);
 			if(useSoap) {
-				config.setPassword(instanceURL + "/services/Soap/u/40.0");
+				config.setServiceEndpoint(instanceURL + "/services/Soap/u/40.0");
 			}else {
-				config.setPassword(instanceURL + "/services/Soap/T/40.0");
+				config.setServiceEndpoint(instanceURL + "/services/Soap/T/40.0");
 			}
 			connection = Connector.newConnection(config);
 
