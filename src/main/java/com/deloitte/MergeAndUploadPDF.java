@@ -79,7 +79,8 @@ public class MergeAndUploadPDF {
 				}
 			}
 
-
+			PDFCombineUsingJava.close();
+			copy.close();
 			File mergedFile = new File("CombinedPDFDocument" + ".pdf");
 			mergedFile.createNewFile();
 
@@ -113,10 +114,8 @@ public class MergeAndUploadPDF {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
-            PDFCombineUsingJava.close();
-            if(copy != null) {
-				copy.close();
-			}
+
+
         }
 
 	}
@@ -161,8 +160,8 @@ public class MergeAndUploadPDF {
 			copy = new PdfCopy(document, new FileOutputStream(FileName));
 			document.open();
 			copy.addPage(copy.getImportedPage(Split_PDF_Document, 1));
-
-
+			copy.close();
+			document.close();
 			File splitFile = new File(FileName);
 			splitFile.createNewFile();
 
@@ -195,16 +194,12 @@ public class MergeAndUploadPDF {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
-            if (copy != null) {
-                copy.close();
-            }
+
             if(Split_PDF_Document != null){
                 Split_PDF_Document.close();
             }
 
-            if(document != null){
-                document.close();
-            }
+
         }
 
 	}
