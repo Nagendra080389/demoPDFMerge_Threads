@@ -26,7 +26,7 @@ public class MergeAndUploadPDF {
 
 		System.out.println("Querying for the mail request...");
 
-        ConnectorConfig config = new ConnectorConfig();
+		ConnectorConfig config = new ConnectorConfig();
 		config.setSessionId(accessToken);
 		if(useSoap) {
 			config.setServiceEndpoint(instanceURL + "/services/Soap/c/40.0");
@@ -78,7 +78,7 @@ public class MergeAndUploadPDF {
 				}
 			}
 			PDFCombineUsingJava.close();
-
+			copy.close();
 			File mergedFile = new File("CombinedPDFDocument" + ".pdf");
 			mergedFile.createNewFile();
 
@@ -111,10 +111,13 @@ public class MergeAndUploadPDF {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-        }
+		}finally {
+
+
+		}
 
 	}
-	
+
 	// split 1 pdf file and get first page out of it
 	public static void splitanduploadPDF(String documentId, String parentId, String accessToken, String instanceURL, boolean useSoap) {
 
@@ -154,8 +157,9 @@ public class MergeAndUploadPDF {
 			copy = new PdfCopy(document, new FileOutputStream(FileName));
 			document.open();
 			copy.addPage(copy.getImportedPage(Split_PDF_Document, 1));
+			copy.close();
 			document.close();
-
+			Split_PDF_Document.close();
 			File splitFile = new File(FileName);
 			splitFile.createNewFile();
 
@@ -187,7 +191,10 @@ public class MergeAndUploadPDF {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-        }
+		}finally {
+
+
+		}
 
 	}
 
