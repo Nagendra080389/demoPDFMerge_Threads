@@ -1,7 +1,16 @@
 package com.deloitte;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfSmartCopy;
+import com.sforce.soap.enterprise.*;
+import com.sforce.soap.enterprise.Error;
+import com.sforce.soap.enterprise.sobject.ContentVersion;
+import com.sforce.ws.ConnectionException;
+import com.sforce.ws.ConnectorConfig;
+
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,21 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.pdf.BadPdfFormatException;
-import com.itextpdf.text.pdf.PdfCopy;
-import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfSmartCopy;
-import com.sforce.soap.enterprise.Connector;
-import com.sforce.soap.enterprise.EnterpriseConnection;
-import com.sforce.soap.enterprise.Error;
-import com.sforce.soap.enterprise.QueryResult;
-import com.sforce.soap.enterprise.SaveResult;
-import com.sforce.soap.enterprise.sobject.ContentVersion;
-import com.sforce.ws.ConnectionException;
-import com.sforce.ws.ConnectorConfig;
 
 public class MergeAndUploadPDF {
 
