@@ -208,9 +208,6 @@ public class MergeAndUploadPDF {
 
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-
-
         }
 
     }
